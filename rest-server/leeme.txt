@@ -1,0 +1,5 @@
+npm install cors --save
+npm install rethinkdb --save
+npm install nodemon --save-dev   
+
+DEBUG=rethink-node:* npm start

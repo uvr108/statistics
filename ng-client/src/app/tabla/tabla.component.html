@@ -1,0 +1,51 @@
+<div><app-cabecera (newItemEvent)="select($event)"></app-cabecera></div>
+<div>
+    <table class="table table-hover table-sm">
+        <thead class="thead-dark">
+          <tr>
+            <th>id</th>
+            <th>latitud</th>
+            <th>longitud</th>
+            <th>depth</th>
+            <th>mag</th>
+            <th>type</th>
+            <th>no</th>
+            <th>origin_time</th>
+            <th>author</th>
+            <th>agency</th>
+            <th>creation_time</th>
+            <th>reference</th>
+            <th>mode</th>
+            <th>status</th>
+            <th>retardo_pub</th>
+            <th>mail</th>
+            <th>retardo_mail</th>
+            <th>mayor_5</th>
+            <th>mayor_20</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of data">
+            <td>{{d.id}}</td>
+            <td>{{d.latitude}}</td>
+            <td>{{d.longitude}}</td>
+            <td>{{d.depth}}</td>
+            <td>{{d.mag}}</td>
+            <td>{{d.type}}</td>
+            <td>{{d.station_count}}</td>
+            <td>{{d.origin_time | date:'medium' }}</td>
+            <td>{{d.author}}</td>
+            <td>{{d.agency}}</td>
+            <td>{{d.creation_time | date:'medium' }}</td>
+            <td>{{d.reference}}</td>
+            <td>{{d.evaluation_mode}}</td>
+            <td>{{d.evaluation_status}}</td>
+            <td>{{d.retardo_pub}}</td>
+            <td>{{d.mail}}</td>
+            <td>{{d.retardo_mail}}</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+

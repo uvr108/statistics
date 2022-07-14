@@ -1,0 +1,22 @@
+html, body{
+    width:100%;
+  }
+  
+  .table-hover > tbody > tr:hover {
+      background-color: #D2D2D2;
+    }
+  
+    table {
+      width: 98%;
+      margin-left: 1%;
+  
+    }
+  
+  table, td {
+    text-align: left;
+  }
+  
+  img {
+    align-items: center;
+  }
+  
