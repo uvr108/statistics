@@ -4,8 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { TablaComponent } from './tabla/tabla.component';
-import { CabeceraComponent } from './cabecera/cabecera.component';
+import { TablaComponent } from './mostra/tabla/tabla.component';
+import { CabeceraComponent } from './mostra/cabecera/cabecera.component';
 
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';

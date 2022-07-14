@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Output, EventEmitter } from '@angular/core';
-import { CrudService } from '../crud.service';
+import { CrudService } from '../../shared/crud.service';
 
 @Component({
   selector: 'app-cabecera',
@@ -14,6 +14,7 @@ export class CabeceraComponent implements OnInit {
 
   constructor(private crud: CrudService) { }
 
+  time:any;
 
   profileForm = new FormGroup({
     per_ini: new FormControl(),
@@ -26,11 +27,13 @@ export class CabeceraComponent implements OnInit {
   });
 
   ngOnInit(): void {
+  
   }
 
-  enviar(email: any, inicial: any, final: any) {
-    console.log("enviar-> ", email, inicial, final);
-    this.crud.sendEmail(email, inicial, final).subscribe();
+  bajar() {
+    this.time = (new Date).getTime();
+    console.log("time-> ", this.time);
+    // this.crud.sendEmail(email, inicial, final).subscribe();
   }
 
   onSubmit() {
