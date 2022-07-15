@@ -5,7 +5,7 @@ from dateutil import parser
 
 import time
 from calendar import timegm
-
+import configparser
 from rethinkdb import RethinkDB
 r = RethinkDB()
 
@@ -23,15 +23,17 @@ def main():
     serverinfo = config['SERVERCONFIG']
     rethinkdb = format(serverinfo['rethinkdb'])
 
+    rabbitmq = config['RABBITMQ']
+
     print(f'rethinkdb : {rethinkdb}')
 
-    exchange = kombu.Exchange(CONFIG["exchange"], no_declare=True)
-    queue = kombu.Queue(name=CONFIG["queue"],
-                        exchange=exchange, rheading_key=CONFIG["topic"], no_declare=True)
+    exchange = kombu.Exchange(format(rabbitmq['exchange']), no_declare=True)
+    queue = kombu.Queue(format(rabbitmq['queue']),
+                        exchange=exchange, rheading_key=format(rabbitmq['topic']), no_declare=True)
 
     r.connect( rethinkdb, 28015).repl()
 
-    with kombu.Connection(CONFIG["amqp_uri"]) as conn:
+    with kombu.Connection(format(rabbitmq['amqp_uri'])) as conn:
         with conn.SimpleQueue(name=queue) as q:
             
             message = q.get()
