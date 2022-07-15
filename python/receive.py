@@ -9,23 +9,7 @@ from calendar import timegm
 from rethinkdb import RethinkDB
 r = RethinkDB()
 
-"""
-CONFIG = {
-    "exchange": "seismic.topic",
-    "amqp_uri": "amqp://temp_stats:eighiikooj6uXaal@dev-pub-mq.lan.csn.uchile.cl//",
-    "topic": "stats.demo",
-    "queue": "stats_demo"
 
-}
-"""
-
-CONFIG = {
-    "exchange": "seismic.topic",
-    "amqp_uri": "amqp://task_stats:hugei3jo4xu1ueV2@dev-pub-mq.lan.csn.uchile.cl//",
-    "topic": "seismic.events.*",
-    "queue": "task_stats"
-
-}
 
 
 
