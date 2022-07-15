@@ -9,6 +9,7 @@ from calendar import timegm
 from rethinkdb import RethinkDB
 r = RethinkDB()
 
+"""
 CONFIG = {
     "exchange": "seismic.topic",
     "amqp_uri": "amqp://temp_stats:eighiikooj6uXaal@dev-pub-mq.lan.csn.uchile.cl//",
@@ -16,6 +17,17 @@ CONFIG = {
     "queue": "stats_demo"
 
 }
+"""
+
+CONFIG = {
+    "exchange": "seismic.topic",
+    "amqp_uri": "amqp://task_stats:hugei3jo4xu1ueV2@dev-pub-mq.lan.csn.uchile.cl//",
+    "topic": "seismic.events.*",
+    "queue": "task_stats"
+
+}
+
+
 
 home_project = "/home/ulises/docker/statistics/python";
 
@@ -39,9 +51,9 @@ def main():
         with conn.SimpleQueue(name=queue) as q:
             
             message = q.get()
-
+            print(message.payload)
             r.db("csn").table("hipocentros").insert(formatea(message.payload)).run()
-            
+            # print(type(message.payload))
             message.ack()
 
 def formatea(msg):
@@ -50,14 +62,13 @@ def formatea(msg):
     body = []
  
     creation_info = msg['data']['event']['creation_info']
-   
-    agency = creation_info['agency'];
-    author = creation_info['author'];
-    creation_time = parser.parse(creation_info['creation_time']); 
+    agency = creation_info['agency']
+    author = creation_info['author']
+    creation_time = parser.parse(creation_info['creation_time']) 
 
-    reference = msg['data']['event']['descriptions'][0]['text'];
+    reference = msg['data']['event']['descriptions'][0]['text']
 
-    id = msg['data']['event']['id'];
+    id = msg['data']['event']['id']
 
     head.append('agency')
     body.append(agency)
@@ -122,13 +133,16 @@ def formatea(msg):
     head.append('longitude')
     body.append(longitude)
 
-    mail = msg['meta']['recipients']['mail']
+    mail = False
+    
+    if "meta" in msg:
+        mail = msg['meta']['recipients']['mail']
 
     head.append('mail')
     body.append(mail)
    
     origin_fec = timegm(time.strptime(preferred_origin['creation_info']['creation_time'], "%Y-%m-%dT%H:%M:%S.%f+00:00"))
-    creation_fec = timegm(time.strptime(creation_info['creation_time'], "%Y-%m-%dT%H:%M:%S+00:00"))
+    creation_fec = timegm(time.strptime(creation_info['creation_time'], "%Y-%m-%dT%H:%M:%S.%f+00:00"))
 
     if mail == True:
    

@@ -1,6 +1,5 @@
 <div><app-cabecera (newItemEvent)="select($event)"></app-cabecera></div>
 <div>
-  {{message}}
     <table class="table table-hover table-sm">
         <thead class="thead-dark">
           <tr>
@@ -29,10 +28,10 @@
         <tbody>
           <tr *ngFor="let d of data">
             <td>{{d.id}}</td>
-            <td>{{d.latitude}}</td>
-            <td>{{d.longitude}}</td>
-            <td>{{d.depth}}</td>
-            <td>{{d.mag}}</td>
+            <td>{{d.latitude | number}}</td>
+            <td>{{d.longitude | number}}</td>
+            <td>{{d.depth | number}}</td>
+            <td>{{d.mag | number}}</td>
             <td>{{d.type}}</td>
             <td>{{d.station_count}}</td>
             <td>{{d.origin_time | date:'medium' }}</td>

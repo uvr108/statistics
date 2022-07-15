@@ -49,7 +49,7 @@ export class CabeceraComponent implements OnInit {
   bajar() {
 
     this.time = (new Date).getTime();
-    console.log("time-> ", this.time);
+    // console.log("time-> ", this.time);
     this.datos.changeMessage(this.time)
     // this.crud.sendEmail(email, inicial, final).subscribe();
   }
