@@ -42,12 +42,15 @@ function get_inifin(q) {
     var ini;
     var fin;
 
+    var per_ini = q.per_ini;
+    var per_fin = q.per_fin;
+
     if ( q.per_ini == 'null' ) { 
       ini = [1970,1,1,0,0,0] 
     } 
     else { 
     per_ini = q.per_ini + 'T00:00:00';
-    ini = lib.getdate(per_ini);
+    ini = getdate(per_ini);
     }
     
     if ( q.per_fin == 'null' ) { 
@@ -56,7 +59,7 @@ function get_inifin(q) {
     } 
     else { 
     per_fin = q.per_fin + 'T23:59:59';
-    fin = lib.getdate(per_fin);
+    fin = getdate(per_fin);
     }  
     return [ini,fin]
 }

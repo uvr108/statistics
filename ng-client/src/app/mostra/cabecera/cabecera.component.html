@@ -1,3 +1,6 @@
+{{message}}
+    <!--button (click)="newMessage()">New Message</button-->
+
 <form  [formGroup]="profileForm" (ngSubmit)="onSubmit()">
   
 <div class="row" style="margin-left: 0.5%;">
@@ -14,7 +17,7 @@
       <label for="date">Periodo Final</label>
     </div>  
   </div>
-
+ 
   <div class="col-sm">
 
     <p></p>
@@ -49,7 +52,7 @@
 
   <div class="col-sm">
     <p></p>
-    <button type="button" (click)="bajar()" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#myModal">Bajar</button>
+    <button type="button" (click)="bajar()" class="btn btn-outline-primary">Bajar</button>
     <span>&nbsp;&nbsp;&nbsp;</span>
     <button type="button" (click)="onSubmit()" class="btn btn-outline-primary">Consultar</button>
   </div>
@@ -57,27 +60,3 @@
 
 </form>
 
-<!-- The Modal -->
-<div class="modal" id="myModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Modal Heading</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-
-      <!-- Modal body -->
-      <div class="modal-body">
-        <a href="assets/download.csv" class="btn btn-default" target="_blank" download="download.csv">Download {{time}}.csv</a>
-      </div>
-
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-      </div>
-
-    </div>
-  </div>
-</div>

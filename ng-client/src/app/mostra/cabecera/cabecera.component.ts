@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Output, EventEmitter } from '@angular/core';
 import { CrudService } from '../../shared/crud.service';
+import { DataService } from "../../shared/data.service";
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cabecera',
@@ -12,7 +14,11 @@ export class CabeceraComponent implements OnInit {
 
   @Output() newItemEvent = new EventEmitter<object>();
 
-  constructor(private crud: CrudService) { }
+  constructor(private crud: CrudService,private datos: DataService ) { }
+
+  message!:string;
+  subscription!: Subscription;
+
 
   time:any;
 
@@ -27,12 +33,24 @@ export class CabeceraComponent implements OnInit {
   });
 
   ngOnInit(): void {
-  
+    this.subscription = this.datos.currentMessage.subscribe(message => this.message = message)
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  /*
+  newMessage() {
+    this.datos.changeMessage("Hello from Sibling")
+  }
+  */
+ 
   bajar() {
+
     this.time = (new Date).getTime();
     console.log("time-> ", this.time);
+    this.datos.changeMessage(this.time)
     // this.crud.sendEmail(email, inicial, final).subscribe();
   }
 
