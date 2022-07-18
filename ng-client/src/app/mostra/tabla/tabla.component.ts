@@ -12,9 +12,10 @@ import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
 export class TablaComponent implements OnInit {
 
   data:any;
-
+  p=0;
   message!:string;
   subscription!: Subscription;
+  informe!:object;
 
   constructor(private crud: CrudService, private datos: DataService) { }
 
@@ -23,7 +24,8 @@ export class TablaComponent implements OnInit {
     this.crud.getData(null,null,true,true, true ,true,true).subscribe( data => { this.data = data; });
     this.subscription = this.datos.currentMessage.subscribe(message => { 
       this.message = message;
-      this.convierte(); 
+      this.convierte();
+      this.getinfo(); 
     });
 
   }  
@@ -32,8 +34,39 @@ export class TablaComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
+  getinfo(): void {
+   
+    
+    if (this.data) {
 
-  convierte() {
+      let num = 0;
+      let perceived = 0;
+      let email = 0;
+      let mayor_5 = 0;
+      let mayor_20 = 0;
+      let preliminary = 0;
+      let final = 0;
+
+
+      this.data.forEach((el:any) => { 
+        if (el.perceived == '') { perceived+=1; }
+        if (el.email) { email+=1; }
+        if (el.mayor_5) { mayor_5+=1; }
+        if (el.mayor_20) { mayor_20+=1; }
+        if (el.evaluation_status == 'preliminary') { preliminary+=1; }
+        if (el.evaluation_status == 'final') { final+=1; }
+        num+=1;
+      }
+    )
+      this.informe = {perceived, email, mayor_5, mayor_20, preliminary, final, num}
+      console.log(this.informe);
+  }
+
+
+    
+  } 
+
+  convierte(): void {  // convierte data para csv
 
     let col:any = [];
     let row:any = [];
@@ -64,7 +97,7 @@ export class TablaComponent implements OnInit {
 
   select(newItem: any) {
 
-     // console.log('newItem->', newItem);
+     console.log('newItem->', newItem);
 
      const per_ini = newItem[0].per_ini;
      const per_fin = newItem[0].per_fin;
@@ -76,6 +109,7 @@ export class TablaComponent implements OnInit {
      const perceived = newItem[0].perceived;
 
     this.crud.getData(per_ini, per_fin, preliminary, confirmed, reviewed, final, perceived).subscribe(data => {
+      console.log(this.data);
       this.data=data;
     });
 

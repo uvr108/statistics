@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 export class CabeceraComponent implements OnInit {
 
   @Output() newItemEvent = new EventEmitter<object>();
+  @Input() informe:object={};
 
   constructor(private crud: CrudService,private datos: DataService ) { }
 
@@ -53,6 +54,7 @@ export class CabeceraComponent implements OnInit {
     this.datos.changeMessage(this.time)
     // this.crud.sendEmail(email, inicial, final).subscribe();
   }
+
 
   onSubmit() {
     this.newItemEvent.emit([this.profileForm.value]);

@@ -1,7 +1,9 @@
-<div><app-cabecera (newItemEvent)="select($event)"></app-cabecera></div>
+<div><app-cabecera (newItemEvent)="select($event)" [informe] = "informe"></app-cabecera></div>
+
 <div>
-    <table class="table table-hover table-sm">
-        <thead class="thead-dark">
+    <!--table class="table table-striped table-striped-sm table-fit table-bordered table-hover"-->
+    <table class="table table-sm table-secondary table-striped table-fit table-bordered">
+        <thead>
           <tr>
             <th>id</th>
             <th>latitud</th>
@@ -18,7 +20,8 @@
             <th>mode</th>
             <th>status</th>
             <th>retardo_pub</th>
-            <th>mail</th>
+            <th>perceived</th>
+            <th>email</th>
             <th>retardo_mail</th>
             <th>mayor_5</th>
             <th>mayor_20</th>
@@ -26,7 +29,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let d of data">
+          <tr *ngFor="let d of data |paginate: { itemsPerPage: 20, currentPage: p }">
             <td>{{d.id}}</td>
             <td>{{d.latitude | number}}</td>
             <td>{{d.longitude | number}}</td>
@@ -42,10 +45,16 @@
             <td>{{d.evaluation_mode}}</td>
             <td>{{d.evaluation_status}}</td>
             <td>{{d.retardo_pub}}</td>
-            <td>{{d.mail}}</td>
+            <td>{{d.perceived}}</td>
+            <td>{{d.email}}</td>
             <td>{{d.retardo_mail}}</td>
+            <td>{{d.mayor_5}}</td>
+            <td>{{d.mayor_20}}</td>
           </tr>
         </tbody>
       </table>
-</div>
 
+</div>
+<div class="col" style="background-color:whitesmoke;">
+        <pagination-controls (pageChange)="p=$event"></pagination-controls>
+    </div>

@@ -9,10 +9,6 @@ import configparser
 from rethinkdb import RethinkDB
 r = RethinkDB()
 
-
-
-
-
 home_project = "/home/ulises/docker/statistics/python";
 
 def main():
@@ -37,7 +33,7 @@ def main():
         with conn.SimpleQueue(name=queue) as q:
             
             message = q.get()
-            print(message.payload)
+            # print(message.payload)
             r.db("csn").table("hipocentros").insert(formatea(message.payload)).run()
             # print(type(message.payload))
             message.ack()
@@ -119,7 +115,7 @@ def formatea(msg):
     head.append('longitude')
     body.append(longitude)
 
-    mail = False
+    mail = None
     
     if "meta" in msg:
         mail = msg['meta']['recipients']['mail']
@@ -143,13 +139,38 @@ def formatea(msg):
        head.append('retardo_mail')
        body.append(None)
         
+
+    retardo_pub = abs(int(creation_fec) - int(origin_fec))
+
+    head.append('mayor_5')
+
+    if retardo_pub > 5*60 and evaluation_status == 'preliminary':
+
+        body.append(True)
+    else:
+        body.append(None) 
+
+    head.append('mayor_20')
+
+    if retardo_pub > 20*60 and evaluation_status == 'final':
+
+        body.append(True)
+    else:
+        body.append(None) 
+
+
+
     head.append('retardo_pub')
-    body.append(int(creation_fec) - int(origin_fec))
+    body.append(retardo_pub)
 
-    head.append('sensible')
+    head.append('perceived')
     body.append(None)
+    
+    out = dict(zip(head,body))
+    
+    print(out)
 
-    return dict(zip(head,body))
+    return out
     
 if __name__ == "__main__":
     main()

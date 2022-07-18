@@ -51,11 +51,56 @@
 
   <div class="col-sm">
     <p></p>
-    <button type="button" (click)="bajar()" class="btn btn-outline-primary">Bajar</button>
+    <button type="button" (click)="bajar()" class="btn btn-outline-primary">Bajar Datos</button>
     <span>&nbsp;&nbsp;&nbsp;</span>
-    <button type="button" (click)="onSubmit()" class="btn btn-outline-primary">Consultar</button>
+    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+      Genera informe
+    </button>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+    <button type="button" (click)="onSubmit()" class="btn btn-outline-primary">Consultar datos</button>
   </div>
 </div>
 
 </form>
 
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Informe</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      {{informe | json}}
+      <div class="modal-body">
+        <table *ngIf="informe" class="table table-secondary  table-striped table-sm">
+          <tbody>
+            <tr>
+              <td>N° Sismos</td><td>informe['num']</td>
+            </tr>  
+            <tr>
+              <td>N° Sismos Sensibles</td><td>b</td>
+            </tr>              
+            <tr>
+              <td>N° Sismos > 5 (Preliminares)</td><td>c</td>
+            </tr>  
+              <tr>
+                <td>N° Sismos > 20 (Finales)</td><td>d</td>
+              </tr>
+            <tr>
+              <td>N° Sismos Sensibles</td><td>e</td>  
+            </tr>  
+          </tbody>
+          </table>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success"  data-bs-dismiss="modal">Bajar Informe</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
