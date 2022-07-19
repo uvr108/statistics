@@ -115,6 +115,7 @@ export class TablaComponent implements OnInit {
     this.crud.getData(per_ini, per_fin, preliminary, confirmed, reviewed, final, perceived).subscribe(data => {
       console.log(this.data);
       this.data=data;
+      this.getinfo(); 
     });
 
   }
