@@ -21,13 +21,17 @@ export class TablaComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.crud.getData(null,null,true,true, true ,true,true).subscribe( data => { this.data = data; });
-    this.subscription = this.datos.currentMessage.subscribe(message => { 
+    this.crud.getData(null,null,true,true, true ,true,true).subscribe( data => { 
+      this.data = data;
+      this.getinfo(); 
+ 
+    });
+    
+    this.subscription = this.datos.dataMessage.subscribe(message => { 
       this.message = message;
       this.convierte();
-      this.getinfo(); 
+ 
     });
-
   }  
 
   ngOnDestroy() {
@@ -39,7 +43,7 @@ export class TablaComponent implements OnInit {
     
     if (this.data) {
 
-      let num = 0;
+      let total = 0;
       let perceived = 0;
       let email = 0;
       let mayor_5 = 0;
@@ -55,10 +59,10 @@ export class TablaComponent implements OnInit {
         if (el.mayor_20) { mayor_20+=1; }
         if (el.evaluation_status == 'preliminary') { preliminary+=1; }
         if (el.evaluation_status == 'final') { final+=1; }
-        num+=1;
+        total+=1;
       }
     )
-      this.informe = {perceived, email, mayor_5, mayor_20, preliminary, final, num}
+      this.informe = {perceived, email, mayor_5, mayor_20, preliminary, final, total}
       console.log(this.informe);
   }
 
@@ -89,7 +93,7 @@ export class TablaComponent implements OnInit {
     });
       // console.log(keys);
       // console.log(row);
-      console.log('yyy ->', this.message);
+      // console.log('yyy ->', this.message);
       let out = new AngularCsv(row, this.message.toString());
     }
    

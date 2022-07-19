@@ -53,8 +53,9 @@
     <p></p>
     <button type="button" (click)="bajar()" class="btn btn-outline-primary">Bajar Datos</button>
     <span>&nbsp;&nbsp;&nbsp;</span>
-    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-      Genera informe
+    <!--button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#myModal"-->
+    <button type="button" class="btn btn-outline-primary" (click)="getinforme()">
+      Genera Informe
     </button>
     <span>&nbsp;&nbsp;&nbsp;</span>
     <button type="button" (click)="onSubmit()" class="btn btn-outline-primary">Consultar datos</button>
@@ -75,25 +76,31 @@
       </div>
 
       <!-- Modal body -->
-      {{informe | json}}
+      
       <div class="modal-body">
         <table *ngIf="informe" class="table table-secondary  table-striped table-sm">
           <tbody>
             <tr>
-              <td>N° Sismos</td><td>informe['num']</td>
+              <td>N° Sismos totales</td><td>{{informe['num']}}</td>
             </tr>  
             <tr>
-              <td>N° Sismos Sensibles</td><td>b</td>
+              <td>N° Sismos Sensibles</td><td>{{informe['perceived']}}</td>
             </tr>              
             <tr>
-              <td>N° Sismos > 5 (Preliminares)</td><td>c</td>
+              <td>N° Sismos > 5 (Preliminares)</td><td>{{informe['mayor_5']}}</td>
             </tr>  
               <tr>
-                <td>N° Sismos > 20 (Finales)</td><td>d</td>
+                <td>N° Sismos > 20 (Finales)</td><td>{{informe['mayor_20']}}</td>
               </tr>
             <tr>
-              <td>N° Sismos Sensibles</td><td>e</td>  
-            </tr>  
+              <td>N° Sismos Preliminares</td><td>{{informe['preliminary']}}</td>  
+            </tr>
+            <tr>
+              <td>N° Sismos Finales</td><td>{{informe['final']}}</td>  
+            </tr> 
+            <tr>
+              <td>emails </td><td>{{informe['email']}}</td>  
+            </tr> 
           </tbody>
           </table>
       <div class="modal-footer">

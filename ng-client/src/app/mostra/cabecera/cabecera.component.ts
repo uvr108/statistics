@@ -4,6 +4,7 @@ import { Output, EventEmitter } from '@angular/core';
 import { CrudService } from '../../shared/crud.service';
 import { DataService } from "../../shared/data.service";
 import { Subscription } from 'rxjs';
+import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
 
 @Component({
   selector: 'app-cabecera',
@@ -13,7 +14,7 @@ import { Subscription } from 'rxjs';
 export class CabeceraComponent implements OnInit {
 
   @Output() newItemEvent = new EventEmitter<object>();
-  @Input() informe:object={};
+  @Input() informe!:any;
 
   constructor(private crud: CrudService,private datos: DataService ) { }
 
@@ -34,7 +35,7 @@ export class CabeceraComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.subscription = this.datos.currentMessage.subscribe(message => this.message = message)
+    this.subscription = this.datos.dataMessage.subscribe(message => this.message = message)
   }
 
   ngOnDestroy() {
@@ -50,11 +51,27 @@ export class CabeceraComponent implements OnInit {
   bajar() {
 
     this.time = (new Date).getTime();
-    // console.log("time-> ", this.time);
     this.datos.changeMessage(this.time)
-    // this.crud.sendEmail(email, inicial, final).subscribe();
+  
   }
 
+  getinforme() {
+
+    let row:any=[];
+
+    if (this.informe) {
+
+          let time = (new Date).getTime();
+  
+          Object.entries(this.informe).forEach(
+            ([key, value]) => {
+              row.push([key, value])            
+            }
+          );
+          // console.log(row)
+          let out = new AngularCsv(row, time.toString());
+        }
+  }
 
   onSubmit() {
     this.newItemEvent.emit([this.profileForm.value]);
