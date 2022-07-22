@@ -1,3 +1,4 @@
+import calendar
 import kombu
 import json
 import configparser
@@ -35,7 +36,7 @@ def main():
             message = q.get()
             # print(message.payload)
             r.db("csn").table("hipocentros").insert(formatea(message.payload)).run()
-            # print(type(message.payload))
+            print(f'message.payload : {message.payload}')
             message.ack()
 
 def formatea(msg):
@@ -58,7 +59,7 @@ def formatea(msg):
     head.append('author')
     body.append(author)
 
-    head.append('id')
+    head.append('ide')
     body.append(id)
 
     head.append('creation_time')
@@ -96,7 +97,7 @@ def formatea(msg):
 
     origin_time = parser.parse(preferred_origin['creation_info']['creation_time'])
 
-    # print(origin_time)
+    print(f"origin_time : {preferred_origin['creation_info']['creation_time']}")
 
     depth = preferred_origin['depth']['value'];
 
@@ -126,13 +127,20 @@ def formatea(msg):
     origin_fec = timegm(time.strptime(preferred_origin['creation_info']['creation_time'], "%Y-%m-%dT%H:%M:%S.%f+00:00"))
     creation_fec = timegm(time.strptime(creation_info['creation_time'], "%Y-%m-%dT%H:%M:%S.%f+00:00"))
 
+
+
     if mail == True:
    
        mail_fec = timegm(time.strptime(msg['meta']['created_at'], "%Y-%m-%dT%H:%M:%S.%f+00:00")) 
         
+       print(f"mail_fec : {msg['meta']['created_at']}")
 
        head.append('retardo_mail')
-       body.append(int(mail_fec) - int(origin_fec))
+
+       retardo_mail = (calendar.timegm(time.gmtime()) - origin_fec)/60
+
+       body.append(retardo_mail)
+       print(f'retardo_mail : {retardo_mail}')
     
     else:
           
@@ -140,11 +148,11 @@ def formatea(msg):
        body.append(None)
         
 
-    retardo_pub = abs(int(creation_fec) - int(origin_fec))
+    retardo_pub = (creation_fec - origin_fec)/60
 
     head.append('mayor_5')
 
-    if retardo_pub > 5*60 and evaluation_status == 'preliminary':
+    if retardo_pub > 5 and evaluation_status == 'preliminary':
 
         body.append(True)
     else:
@@ -152,7 +160,7 @@ def formatea(msg):
 
     head.append('mayor_20')
 
-    if retardo_pub > 20*60 and evaluation_status == 'final':
+    if retardo_pub > 20 and evaluation_status == 'final':
 
         body.append(True)
     else:

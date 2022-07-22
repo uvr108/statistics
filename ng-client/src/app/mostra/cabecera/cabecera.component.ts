@@ -35,7 +35,10 @@ export class CabeceraComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.subscription = this.datos.dataMessage.subscribe(message => this.message = message)
+    this.subscription = this.datos.dataMessage.subscribe(message => { 
+      this.message = message;
+      console.log(this.message);}
+      )
   }
 
   ngOnDestroy() {

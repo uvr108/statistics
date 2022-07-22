@@ -23,6 +23,7 @@ export class TablaComponent implements OnInit {
     
     this.crud.getData(null,null,true,true, true ,true,true).subscribe( data => { 
       this.data = data;
+      // console.log(this.data);
       this.getinfo(); 
  
     });
@@ -45,25 +46,27 @@ export class TablaComponent implements OnInit {
 
       let total = 0;
       let perceived = 0;
-      let email = 0;
+      let mail = 0;
       let mayor_5 = 0;
       let mayor_20 = 0;
       let preliminary = 0;
       let final = 0;
-
+      let ide:any = [];
 
       this.data.forEach((el:any) => { 
         if (el.perceived == '') { perceived+=1; }
-        if (el.email) { email+=1; }
+        if (el.mail) { mail+=1; }
         if (el.mayor_5) { mayor_5+=1; }
         if (el.mayor_20) { mayor_20+=1; }
         if (el.evaluation_status == 'preliminary') { preliminary+=1; }
         if (el.evaluation_status == 'final') { final+=1; }
-        total+=1;
+        // if (ide.indexOf()) {  } else { total+=1; ide.push(el.ide);  }
+        if (ide.indexOf(el.ide) == -1) { total+=1; ide.push(el.ide) };
+        console.log(total, el.ide,ide)
       }
     )
-      this.informe = {perceived, email, mayor_5, mayor_20, preliminary, final, total}
-      console.log(this.informe);
+      this.informe = {perceived, mail, mayor_5, mayor_20, preliminary, final, total}
+      // console.log(this.informe);
   }
 
 
@@ -101,7 +104,7 @@ export class TablaComponent implements OnInit {
 
   select(newItem: any) {
 
-     console.log('newItem->', newItem);
+     console.log('select ->', newItem);
 
      const per_ini = newItem[0].per_ini;
      const per_fin = newItem[0].per_fin;
@@ -113,7 +116,7 @@ export class TablaComponent implements OnInit {
      const perceived = newItem[0].perceived;
 
     this.crud.getData(per_ini, per_fin, preliminary, confirmed, reviewed, final, perceived).subscribe(data => {
-      console.log(this.data);
+      // console.log(this.data);
       this.data=data;
       this.getinfo(); 
     });
