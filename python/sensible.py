@@ -42,6 +42,11 @@ def main():
 
             event = message.payload['data']['event']
 
+            for v in event['descriptions']:
+                if v['type'] == 'felt report':
+                    r.db("csn").table("hipocentros").filter({"id": id}).update({"sensible": True}).run()
+
+            """
             type = event['descriptions'][0]['type']
 
             id = event['id']
@@ -51,9 +56,9 @@ def main():
             if type == "felt report":
 
                 r.db("csn").table("hipocentros").filter({"id": id}).update({"sensible": True}).run()
+            """
+            # message.ack()
             
-            message.ack()
-
 
 if __name__ == "__main__":
 

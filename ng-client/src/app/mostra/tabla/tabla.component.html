@@ -19,10 +19,11 @@
             <th>reference</th>
             <th>mode</th>
             <th>status</th>
-            <th>retardo_pub</th>
-            <th>perceived</th>
             <th>mail</th>
+            <th>retardo_pub</th>
             <th>retardo_mail</th>
+            <th>perceived</th>     
+       
             <th>mayor_5</th>
             <th>mayor_20</th>
 
@@ -44,10 +45,13 @@
             <td>{{d.reference}}</td>
             <td>{{d.evaluation_mode}}</td>
             <td>{{d.evaluation_status}}</td>
-            <td>{{d.retardo_pub}}</td>
-            <td>{{d.perceived}}</td>
             <td>{{d.mail}}</td>
-            <td>{{d.retardo_mail}}</td>
+            <td>{{d.retardo_pub | number}}</td>
+
+            
+            <td>{{d.retardo_mail | number}}</td>
+            <td>{{d.perceived}}</td>
+         
             <td>{{d.mayor_5}}</td>
             <td>{{d.mayor_20}}</td>
           </tr>

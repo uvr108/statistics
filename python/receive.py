@@ -22,7 +22,7 @@ def main():
 
     rabbitmq = config['RABBITMQ']
 
-    print(f'rethinkdb : {rethinkdb}')
+    # print(f'rethinkdb : {rethinkdb}')
 
     exchange = kombu.Exchange(format(rabbitmq['exchange']), no_declare=True)
     queue = kombu.Queue(format(rabbitmq['queue']),
@@ -35,9 +35,10 @@ def main():
             
             message = q.get()
             # print(message.payload)
+            # formatea(message.payload)
             r.db("csn").table("hipocentros").insert(formatea(message.payload)).run()
-            print(f'message.payload : {message.payload}')
-            message.ack()
+            # print(f'message.payload : {message.payload}')
+            # message.ack()
 
 def formatea(msg):
    
@@ -46,24 +47,27 @@ def formatea(msg):
  
     creation_info = msg['data']['event']['creation_info']
     agency = creation_info['agency']
-    author = creation_info['author']
-    creation_time = parser.parse(creation_info['creation_time']) 
-
-    reference = msg['data']['event']['descriptions'][0]['text']
-
+ 
     id = msg['data']['event']['id']
-
-    head.append('agency')
-    body.append(agency)
-
-    head.append('author')
-    body.append(author)
 
     head.append('ide')
     body.append(id)
 
-    head.append('creation_time')
-    body.append(creation_time)
+    for v in msg['data']['event']['descriptions']:
+
+        if v['type'] == 'felt report':
+            r.db("csn").table("hipocentros").filter({"ide": id}).update({"perceived": True}).run()
+
+        if v['type'] == 'nearest cities':
+            reference = v['text']   
+
+    head.append('agency')
+    body.append(agency)
+
+    author = creation_info['author']
+
+    head.append('author')
+    body.append(author)
 
     head.append('reference')
     body.append(reference)
@@ -95,17 +99,10 @@ def formatea(msg):
 
     preferred_origin = msg['data']['event']['preferred_origin'];
 
-    origin_time = parser.parse(preferred_origin['creation_info']['creation_time'])
-
-    print(f"origin_time : {preferred_origin['creation_info']['creation_time']}")
-
-    depth = preferred_origin['depth']['value'];
+    depth = float(preferred_origin['depth']['value'])/1000;
 
     latitude = preferred_origin['latitude'];
     longitude = preferred_origin['longitude'];
-
-    head.append('origin_time')
-    body.append(origin_time)
 
     head.append('depth')
     body.append(depth)
@@ -119,28 +116,55 @@ def formatea(msg):
     mail = None
     
     if "meta" in msg:
+
+        # mail
         mail = msg['meta']['recipients']['mail']
-
-    head.append('mail')
-    body.append(mail)
+        head.append('mail')
+        body.append(mail)
    
-    origin_fec = timegm(time.strptime(preferred_origin['creation_info']['creation_time'], "%Y-%m-%dT%H:%M:%S.%f+00:00"))
-    creation_fec = timegm(time.strptime(creation_info['creation_time'], "%Y-%m-%dT%H:%M:%S.%f+00:00"))
+        # creation_time
+        creation_time = timegm(time.strptime(msg['meta']['created_at'], "%Y-%m-%dT%H:%M:%S.%f+00:00"))
+        head.append('creation_time')
+        body.append(parser.parse(msg['meta']['created_at']))
+        
+        origin_time =    timegm(time.strptime(preferred_origin['time'], "%Y-%m-%dT%H:%M:%S.%f+00:00"))  
+        
 
+        head.append('origin_time')
+        body.append(parser.parse(preferred_origin['time']))
+
+
+        retardo_pub = (creation_time - origin_time)/60        
+
+        head.append('retardo_pub')
+        body.append(retardo_pub)
+
+        # mayor_5
+        head.append('mayor_5')
+
+        if retardo_pub > 5 and evaluation_status == 'preliminary':
+
+            body.append(True)
+        else:
+            body.append(None) 
+        
+        # mayor_20
+        head.append('mayor_20')
+
+        if retardo_pub > 20 and evaluation_status == 'final':
+
+            body.append(True)
+        else:
+            body.append(None) 
 
 
     if mail == True:
    
-       mail_fec = timegm(time.strptime(msg['meta']['created_at'], "%Y-%m-%dT%H:%M:%S.%f+00:00")) 
-        
-       print(f"mail_fec : {msg['meta']['created_at']}")
-
+       # retardo_mail
        head.append('retardo_mail')
-
-       retardo_mail = (calendar.timegm(time.gmtime()) - origin_fec)/60
+       retardo_mail = (calendar.timegm(time.gmtime()) - origin_time)/60
 
        body.append(retardo_mail)
-       print(f'retardo_mail : {retardo_mail}')
     
     else:
           
@@ -148,35 +172,35 @@ def formatea(msg):
        body.append(None)
         
 
-    retardo_pub = (creation_fec - origin_fec)/60
-
-    head.append('mayor_5')
-
-    if retardo_pub > 5 and evaluation_status == 'preliminary':
-
-        body.append(True)
-    else:
-        body.append(None) 
-
-    head.append('mayor_20')
-
-    if retardo_pub > 20 and evaluation_status == 'final':
-
-        body.append(True)
-    else:
-        body.append(None) 
-
-
-
-    head.append('retardo_pub')
-    body.append(retardo_pub)
-
     head.append('perceived')
     body.append(None)
-    
+
     out = dict(zip(head,body))
-    
-    print(out)
+
+    """  
+    print(out['ide'])
+    print(out['latitude'])
+    print(out['longitude'])
+    print(out['depth'])
+    print(out['mag'])
+    print(out['type'])
+    print(out['station_count'])
+    print(out['origin_time'])
+    print(out['author'])
+    print(out['agency'])
+    print(out['creation_time'])
+    print(out['reference'])
+    print(out['evaluation_mode'])
+    print(out['evaluation_status'])
+    print(out['mail'])
+    print(out['retardo_pub'])
+    print(out['retardo_mail'])
+    print(out['mayor_5'])
+    print(out['mayor_20'])
+    print(out['perceived'])
+    """
+
+    # print(out)
 
     return out
     
