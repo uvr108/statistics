@@ -18,17 +18,21 @@ router.get('/',  async (req, res, next) => {
 
     var ini_fin = lib.get_inifin(req.query);
 
-    contiene = lib.getconteiner(req.query); 
+    contiene = lib.getconteiner(req.query);
+    // perceived = lib.getperceived(req.query);
   
     // console.log('req.query', req.query);
    
-    var ini = ini_fin[0];
-    var fin = ini_fin[1];
+    let ini = ini_fin[0];
+    let fin = ini_fin[1];
 
-    console.log(ini, fin);
+    let perceived = lib.getperceived(req.query)
+
+    // console.log(ini, fin, contiene, perceived);
 
     const hipocentros = await r.table('hipocentros')
     .filter(function(doc) { return r.expr(contiene).contains(doc("evaluation_status"))} )
+    .filter( function(hipo) { return hipo('perceived').eq(perceived).or(hipo('perceived').eq(null)); })
     .filter(r.row('origin_time')
     .during(r.time(ini[0], ini[1], ini[2], ini[3], ini[4], ini[5], "Z"), r.time(fin[0], fin[1], fin[2], fin[3], fin[4], fin[5], "Z")))
     .orderBy(r.desc('ide')).run(connection);

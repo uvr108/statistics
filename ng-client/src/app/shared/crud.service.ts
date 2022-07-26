@@ -54,18 +54,19 @@ export class CrudService {
   }
   
 
-  getData(per_ini:any,per_fin:any, 
+  getData(per_ini:any,
+          per_fin:any, 
           preliminary: boolean,
-          confirmed: boolean,
           reviewed: boolean,
           final: boolean,
           perceived: boolean): Observable<any> {
     
     var  baseurl = this.baseurl + '/data';
     
-  //   console.log(per_ini, per_fin);
-    
-    let parameters = {per_ini, per_fin, preliminary, confirmed, reviewed, final, perceived};
+    let parameters = {per_ini, per_fin, preliminary, reviewed, final, perceived};
+
+    // console.log(parameters);
+
     let queryParams = new HttpParams({ fromObject: parameters });   
     
     return this.http.get<any>(baseurl, {params:queryParams})

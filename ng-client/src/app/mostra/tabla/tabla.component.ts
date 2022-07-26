@@ -21,7 +21,7 @@ export class TablaComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.crud.getData(null,null,true,true, true ,true,true).subscribe( data => { 
+    this.crud.getData(null,null,true,true, true ,true).subscribe( data => { 
       this.data = data;
       // console.log(this.data);
       this.getinfo(); 
@@ -62,7 +62,7 @@ export class TablaComponent implements OnInit {
         if (el.evaluation_status == 'final') { final+=1; }
         // if (ide.indexOf()) {  } else { total+=1; ide.push(el.ide);  }
         if (ide.indexOf(el.ide) == -1) { total+=1; ide.push(el.ide) };
-        console.log(total, el.ide,ide)
+        // console.log(total, el.ide,ide)
       }
     )
       this.informe = {perceived, mail, mayor_5, mayor_20, preliminary, final, total}
@@ -104,18 +104,16 @@ export class TablaComponent implements OnInit {
 
   select(newItem: any) {
 
-     console.log('select ->', newItem);
+     // console.log('select ->', newItem);
 
      const per_ini = newItem[0].per_ini;
      const per_fin = newItem[0].per_fin;
-
      const preliminary =  newItem[0].preliminary;
-     const confirmed = newItem[0].confirmed;
      const reviewed = newItem[0].reviewed;
      const final = newItem[0].final;
      const perceived = newItem[0].perceived;
 
-    this.crud.getData(per_ini, per_fin, preliminary, confirmed, reviewed, final, perceived).subscribe(data => {
+    this.crud.getData(per_ini, per_fin, preliminary, reviewed, final, perceived).subscribe(data => {
       // console.log(this.data);
       this.data=data;
       this.getinfo(); 

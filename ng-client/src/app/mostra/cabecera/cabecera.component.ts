@@ -28,7 +28,6 @@ export class CabeceraComponent implements OnInit {
     per_ini: new FormControl(),
     per_fin: new FormControl(),
     preliminary: new FormControl(true),
-    confirmed: new FormControl(true),
     reviewed: new FormControl(true),
     final: new FormControl(true),
     perceived: new FormControl(true)

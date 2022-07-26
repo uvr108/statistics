@@ -20,21 +20,31 @@ function getdate(fecha) {
 function getconteiner(q) {
 
   const preliminary = q.preliminary;
-  const confirmed = q.confirmed;
   const reviewed = q.reviewed;
   const final = q.final;
-  const perceived = q.perceived;
+  
   let   contiene = [];
 
   if (preliminary == 'true') { contiene.push("preliminary"); }
-  if (confirmed == 'true') { contiene.push("confirmed"); }
   if (reviewed == 'true') { contiene.push("reviewed"); }
   if (final == 'true') { contiene.push("final"); }
-  if (perceived == 'true') { contiene.push("perceived"); }
 
   return contiene;
 
 }
+
+function getperceived(q) {
+  let out;
+  // console.log(q)
+  if (q.perceived == 'true') {
+    out = true;
+  } 
+  else {
+    out = null;
+  }
+  return out;
+}
+
 
 function get_inifin(q) {
 
@@ -63,4 +73,4 @@ function get_inifin(q) {
     return [ini,fin]
 }
 
-  module.exports = { getdate, getconteiner, get_inifin };
+  module.exports = { getdate, getconteiner, getperceived ,  get_inifin };
