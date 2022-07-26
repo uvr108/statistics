@@ -37,7 +37,7 @@ async def work():
                 message = q.get()
                 print(message.payload)
             
-                r.db("csn").table("hipocentros").insert(formatea(message.payload)).run()
+                r.db("csn").table("hipocentros").insert(formatea(r, message.payload)).run()
                 # print(f'message.payload : {message.payload}')
                 message.ack()
 

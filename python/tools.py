@@ -3,7 +3,7 @@ from calendar import timegm
 from dateutil import parser
 import calendar
 
-def formatea(msg):
+def formatea(r, msg):
    
     head = []
     body = []
@@ -120,7 +120,7 @@ def formatea(msg):
         else:
             body.append(None) 
 
-
+    """
     if mail == True:
    
        # retardo_mail
@@ -133,7 +133,8 @@ def formatea(msg):
           
        head.append('retardo_mail')
        body.append(None)
-        
+
+    """    
 
     head.append('perceived')
     body.append(None)
@@ -157,7 +158,7 @@ def formatea(msg):
     print(out['evaluation_status'])
     print(out['mail'])
     print(out['retardo_pub'])
-    print(out['retardo_mail'])
+    # print(out['retardo_mail'])
     print(out['mayor_5'])
     print(out['mayor_20'])
     print(out['perceived'])

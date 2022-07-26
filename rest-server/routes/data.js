@@ -31,7 +31,7 @@ router.get('/',  async (req, res, next) => {
     .filter(function(doc) { return r.expr(contiene).contains(doc("evaluation_status"))} )
     .filter(r.row('origin_time')
     .during(r.time(ini[0], ini[1], ini[2], ini[3], ini[4], ini[5], "Z"), r.time(fin[0], fin[1], fin[2], fin[3], fin[4], fin[5], "Z")))
-    .orderBy(r.desc('iden')).run(connection);
+    .orderBy(r.desc('ide')).run(connection);
 
     for (var hipo of hipocentros) { console.log(hipo.creation_time); };
 
