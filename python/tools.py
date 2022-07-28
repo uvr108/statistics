@@ -3,6 +3,10 @@ from calendar import timegm
 from dateutil import parser
 import calendar
 
+def getversion(r, id, status):
+
+    return r.db('csn').table('hipocentros').filter({'ide':id , 'evaluation_status': status}).count().run()
+
 def formatea(r, msg):
    
     head = []
@@ -78,6 +82,9 @@ def formatea(r, msg):
 
     mail = None
     
+    head.append('version')
+    body.append(getversion(r, id, evaluation_status))    
+
     if "meta" in msg:
 
         # mail
@@ -141,7 +148,7 @@ def formatea(r, msg):
 
     out = dict(zip(head,body))
 
-    """  
+    """      
     print(out['ide'])
     print(out['latitude'])
     print(out['longitude'])
@@ -158,11 +165,11 @@ def formatea(r, msg):
     print(out['evaluation_status'])
     print(out['mail'])
     print(out['retardo_pub'])
-    # print(out['retardo_mail'])
     print(out['mayor_5'])
     print(out['mayor_20'])
     print(out['perceived'])
     """
+    print(out['version'])
 
     # print(out)
 

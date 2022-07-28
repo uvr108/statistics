@@ -35,7 +35,7 @@ async def work():
         with conn.SimpleQueue(name=queue) as q:
             while (True):
                 message = q.get()
-                print(message.payload)
+                # print(message.payload)
             
                 r.db("csn").table("hipocentros").insert(formatea(r, message.payload)).run()
                 # print(f'message.payload : {message.payload}')
