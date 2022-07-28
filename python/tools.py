@@ -93,12 +93,19 @@ def formatea(r, msg):
         body.append(mail)
    
         # creation_time
-        creation_time = timegm(time.strptime(msg['meta']['created_at'], "%Y-%m-%dT%H:%M:%S.%f+00:00"))
+        try:
+            creation_time = timegm(time.strptime(msg['meta']['created_at'], "%Y-%m-%dT%H:%M:%S.%f+00:00"))
+        except ValueError:
+            creation_time = timegm(time.strptime(msg['meta']['created_at'], "%Y-%m-%dT%H:%M:%S+00:00"))
+
         head.append('creation_time')
         body.append(parser.parse(msg['meta']['created_at']))
         
-        origin_time =    timegm(time.strptime(preferred_origin['time'], "%Y-%m-%dT%H:%M:%S.%f+00:00"))  
-        
+
+        try:
+            origin_time =    timegm(time.strptime(preferred_origin['time'], "%Y-%m-%dT%H:%M:%S.%f+00:00"))  
+        except ValueError:
+            origin_time =    timegm(time.strptime(preferred_origin['time'], "%Y-%m-%dT%H:%M:%S+00:00")) 
 
         head.append('origin_time')
         body.append(parser.parse(preferred_origin['time']))
@@ -112,36 +119,18 @@ def formatea(r, msg):
         # mayor_5
         head.append('mayor_5')
 
-        if retardo_pub > 5 and evaluation_status == 'preliminary':
-
-            body.append(True)
+        if retardo_pub > 5 and evaluation_status == 'preliminary' and mail == True:
+                    body.append(True)
         else:
             body.append(None) 
         
         # mayor_20
         head.append('mayor_20')
 
-        if retardo_pub > 20 and evaluation_status == 'final':
-
-            body.append(True)
+        if retardo_pub > 20 and evaluation_status == 'final' and mail == True:
+                    body.append(True)
         else:
             body.append(None) 
-
-    """
-    if mail == True:
-   
-       # retardo_mail
-       head.append('retardo_mail')
-       retardo_mail = (calendar.timegm(time.gmtime()) - origin_time)/60
-
-       body.append(retardo_mail)
-    
-    else:
-          
-       head.append('retardo_mail')
-       body.append(None)
-
-    """    
 
     head.append('perceived')
     body.append(None)
@@ -162,14 +151,13 @@ def formatea(r, msg):
     print(out['creation_time'])
     print(out['reference'])
     print(out['evaluation_mode'])
-    print(out['evaluation_status'])
-    print(out['mail'])
+
+    
     print(out['retardo_pub'])
     print(out['mayor_5'])
     print(out['mayor_20'])
     print(out['perceived'])
     """
-    print(out['version'])
 
     # print(out)
 

@@ -20,7 +20,7 @@
             <th>mode</th>
             <th>status</th>
             <th>mail</th>
-            <th>retardo_pub</th>
+            <th>retardo</th>
             <!--th>retardo_mail</th-->
             <th>perceived</th>     
        
@@ -39,10 +39,10 @@
             <td>{{d.mag | number}}</td>
             <td>{{d.type}}</td>
             <td>{{d.station_count}}</td>
-            <td>{{d.origin_time | date:'medium' }}</td>
+            <td>{{d.origin_time | date:'medium':'GMT' }}</td>
             <td>{{d.author}}</td>
             <td>{{d.agency}}</td>
-            <td>{{d.creation_time | date:'medium' }}</td>
+            <td>{{d.creation_time | date:'y/MM/dd HH:mm:ss z' }}</td>
             <td>{{d.reference}}</td>
             <td>{{d.evaluation_mode}}</td>
             <td>{{d.evaluation_status}}</td>
